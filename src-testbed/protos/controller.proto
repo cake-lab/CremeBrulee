@@ -1,0 +1,27 @@
+
+syntax = "proto3";
+
+service Controller {
+    rpc Infer (InferenceRequest) returns (InferenceResponse){}
+    rpc Load (ModelManageRequest) returns (PotentialError){}
+    rpc Unload (ModelManageRequest) returns (PotentialError){}
+}
+
+message InferenceRequest {
+    string data = 1;
+    string model_name = 2;
+}
+
+message InferenceResponse {
+    string response = 1;
+    PotentialError error = 2;
+}
+
+message ModelManageRequest {
+    string model_name=1;
+    int32 worker_id=2;
+}
+
+message PotentialError {
+    string errorMsg=1;
+}
