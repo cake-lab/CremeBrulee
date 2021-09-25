@@ -1,0 +1,27 @@
+# YAML 1.2
+---
+authors: 
+  -
+    affiliation: "Worcester Polytechnic Institute"
+    family-names: Ogden
+    given-names: "Samuel S."
+    orcid: "https://orcid.org/0000-0003-2851-4129"
+  -
+    affiliation: "Worcester Polytechnic Institute"
+    family-names: Walls
+    given-names: "Robert J."
+  -
+    affiliation: "Worcester Polytechnic Institute"
+    family-names: Guo
+    given-names: Tian
+    orcid: "https://orcid.org/0000-0003-0060-2266"
+  -
+    affiliation: "Worcester Polytechnic Institute"
+    family-names: Gilman
+    given-names: Guin
+cff-version: "1.2.0"
+license: MIT
+message: "If you use this paper/code, please cite it using the following."
+repository-code: "https://github.com/cake-lab/CremeBrulee"
+title: "Many Models at the Edge: Characterizing and Improving Deep Inference via Model-Level Caching"
+...
