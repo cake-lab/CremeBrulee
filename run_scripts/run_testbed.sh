@@ -4,7 +4,7 @@ RNG_SEED=0
 NUM_LOOPS=1
 NUM_MINUTES=1
 WORKER_MEMORY=4
-POLICY="belady-amortized"
+POLICY="cremebrulee-oracle"
 QPM=6
 
 
@@ -13,7 +13,6 @@ cd ../src-testbed
 if true ; then
   echo "Generating workload"
   (
-    pwd 
     cd ../src-workload 
     python -u parse_azure.py \
       --rng_seed $RNG_SEED \
@@ -23,7 +22,6 @@ if true ; then
       --downsample_events 0.001 \
       --input_models_file ../measurements/models.short.json \
       --keep_real_models \
-      #--qpm 60
   )
 else
   echo "Skipping workload generation"

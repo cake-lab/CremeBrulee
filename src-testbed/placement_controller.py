@@ -448,11 +448,11 @@ class PlacementController(object):
     elif self.flags.model_eviction_algorithm == "belady" or (self.flags.model_eviction_algorithm == "random" and self.flags.random_weights == "belady"):
       model_weights = self.getWeights_belady(models_to_consider)
       
-    elif self.flags.model_eviction_algorithm == "belady-amortized" or (self.flags.model_eviction_algorithm == "random" and self.flags.random_weights == "belady-amortized"):
-      model_weights = self.getWeights_beladyam(models_to_consider, scaler_func=max_scaler, cost_scale=self.flags.cost_scale, boundary_scale=self.flags.boundary_scale, use_size=(not self.flags.do_not_use_size))
+    elif self.flags.model_eviction_algorithm == "cremebrulee-oracle" or (self.flags.model_eviction_algorithm == "random" and self.flags.random_weights == "cremebrulee-oracle"):
+      model_weights = self.getWeights_cremebruleeoracle(models_to_consider, scaler_func=max_scaler, cost_scale=self.flags.cost_scale, boundary_scale=self.flags.boundary_scale, use_size=(not self.flags.do_not_use_size))
       
-    elif self.flags.model_eviction_algorithm == "smart" or (self.flags.model_eviction_algorithm == "random" and self.flags.random_weights == "smart"):
-      model_weights = self.getWeights_smart(models_to_consider, scaler_func=max_scaler, cost_scale=self.flags.cost_scale, boundary_scale=self.flags.boundary_scale, use_size=(not self.flags.do_not_use_size))
+    elif self.flags.model_eviction_algorithm == "cremebrulee" or (self.flags.model_eviction_algorithm == "random" and self.flags.random_weights == "cremebrulee"):
+      model_weights = self.getWeights_cremebrulee(models_to_consider, scaler_func=max_scaler, cost_scale=self.flags.cost_scale, boundary_scale=self.flags.boundary_scale, use_size=(not self.flags.do_not_use_size))
       
     else:
       model_weights = self.getWeights_naive(models_to_consider)
@@ -499,7 +499,7 @@ class PlacementController(object):
   ## Our goal is to have higher weights be better.
   ## For instance, a high cost model will have more value, or a more popular model will have more value.
   ## We should stick to these pattern whenever possible.
-  ## For compound weights (e.g. smart or beladyam) we should combine other approaches, and return the output in the same order
+  ## For compound weights (e.g. cremebrulee) we should combine other approaches, and return the output in the same order
   def getModelWeights(self, list_of_models, value_func=(lambda m: 0.), normalize=False, *args, **kwargs):
     w = np.array([value_func(m) for m in list_of_models])
     return w
@@ -520,7 +520,7 @@ class PlacementController(object):
     return self.getModelWeights(list_of_models, value_func=self.getSize, *args, **kwargs)
   
   # Compound weight functions
-  def getWeights_beladyam(self, list_of_models, cost_scale=1.0, boundary_scale=1.0, use_size=True, *args, **kwargs):
+  def getWeights_cremebruleeoracle(self, list_of_models, cost_scale=1.0, boundary_scale=1.0, use_size=True, *args, **kwargs):
     if "scaler_func" in kwargs:
       scaler_func = kwargs["scaler_func"]
     else:
@@ -537,7 +537,7 @@ class PlacementController(object):
     else:
       return (w_belady * w_cost)
     
-  def getWeights_smart(self, list_of_models, cost_scale=1.0, boundary_scale=1.0, use_size=True, *args, **kwargs):
+  def getWeights_cremebrulee(self, list_of_models, cost_scale=1.0, boundary_scale=1.0, use_size=True, *args, **kwargs):
     w_popularity = self.getWeights_popularity(list_of_models, *args, **kwargs)
     if "scaler_func" in kwargs:
       scaler_func = kwargs["scaler_func"]
@@ -746,10 +746,10 @@ def getParser(add_help=True, include_parents=True):
   parser.add_argument('--model_eviction_algorithm', 
               choices=['random', 
                       'belady',
-                      'belady-amortized',
+                      'cremebrulee-oracle',
                       'popularity', 
                       'loadtime', 
-                      'smart',
+                      'cremebrulee',
                       'recent',
                     ],
               default='random',
@@ -779,8 +779,8 @@ def getParser(add_help=True, include_parents=True):
       "popularity", 
       "loadtime", 
       "belady", 
-      "belady-amortized", 
-      "smart"]
+      "cremebrulee-oracle", 
+      "cremebrulee"]
   )
   
   #####################
@@ -807,7 +807,7 @@ def getParser(add_help=True, include_parents=True):
   
   parser.add_argument('--cost_scale', default=1.0, type=float, help="Modifier to be applied to the cost of a model.")
   parser.add_argument('--boundary_scale', default=1.0, type=float, help="Modifier to be applied to the belady boundary of a model.")
-  parser.add_argument('--do_not_use_size', action="store_true", help="Set to not use size in smart and beladyam")
+  parser.add_argument('--do_not_use_size', action="store_true", help="Set to not use size in cremebrulee")
   
   return parser
 

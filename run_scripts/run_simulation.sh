@@ -3,16 +3,16 @@
 declare -a eviction_algos=(
     #"random"
     "belady"
-    #"belady-amortized"
-    #"smart"
-    #"smart --oracle"
+    #"cremebrulee-oracle"
+    #"cremebrulee"
+    #"cremebrulee --oracle"
     #"popularity"
     #"loadtime"
     #"recent"
   ) 
 
 RNG_SEED=0
-POLICY="belady-amortized"
+POLICY="cremebrulee-oracle"
 WORKER_MEMORY=1024
 
 cd ../src-simulator
