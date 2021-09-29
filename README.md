@@ -52,4 +52,7 @@ This policy is called CremeBrulee and we realize it in a testbed and in simulati
 
 ## Acknowledgements
 
-To be added....
+This work is supported in part by National Science Foundation's support under grants CNS-#1755659 and CNS-#1815619.
+Additionally we would like to thank [Scott Gubrud](https://github.com/GubrudScott) for his contributions to an early iteration of the code base.
+Finally, we would like to thank all anonymous reviewers for their insightful feedback which helped improve this paper.
+
